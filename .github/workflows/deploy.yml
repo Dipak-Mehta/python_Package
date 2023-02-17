@@ -1,24 +1,43 @@
-name: Deploy Package
+# name: Deploy Package
+# on:
+#   release:
+#     types: [created]
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: 3.7
+#       - name: Install dependencies
+#         run: pip install twine
+#       - name: Download package
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dist
+#       - name: Deploy package
+#         env:
+#           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+#           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+#         run: twine upload dist/*
+
+
+name: Publish to PyPI.org
 on:
   release:
-    types: [created]
+    types: [published]
 jobs:
-  deploy:
+  pypi:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          python-version: 3.7
-      - name: Install dependencies
-        run: pip install twine
-      - name: Download package
-        uses: actions/download-artifact@v2
+          fetch-depth: 0
+      - run: python3 -m pip install --upgrade build && python3 -m build
+      - name: Publish package
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          name: dist
-      - name: Deploy package
-        env:
-          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
-        run: twine upload dist/*
