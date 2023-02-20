@@ -10,3 +10,4 @@ jobs:
         run: .github/scripts/release.py
         env:
           GITHUB_TOKEN: ${{ secrets.TWINE_PASSWORD}}
+          
