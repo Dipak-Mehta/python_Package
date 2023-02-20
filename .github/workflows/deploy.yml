@@ -1,16 +1,87 @@
-name: Create a new patch release
-on: workflow_dispatch
+# name: Create a new patch release
+# on: workflow_dispatch
+# jobs:
+#   github:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v1
+#       # - uses: pocket-apps/action-update-version@v1
+#       #   with:
+#       #     files: 'package.json, app.yaml'
+#       #     version-regexp: '\d+.\d+.\d+'
+#       - name: Create new patch release
+#         run: .github/scripts/release.py
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN}}
+
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
 jobs:
-  github:
+  test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      # - uses: pocket-apps/action-update-version@v1
-      #   with:
-      #     files: 'package.json, app.yaml'
-      #     version-regexp: '\d+.\d+.\d+'
-      - name: Create new patch release
-        run: .github/scripts/release.py
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build package
+        run: python setup.py sdist bdist_wheel
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install twine
+        run: pip install twine
+
+      - name: Upload to PyPI
+        run: twine upload dist/*
         env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN}}
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+
+
