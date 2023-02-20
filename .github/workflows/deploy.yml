@@ -40,4 +40,4 @@ jobs:
       - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+          password: ${{ secrets.TWINE_PASSWORD }}
