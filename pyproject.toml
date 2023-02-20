@@ -9,6 +9,7 @@ name = "example_package_dipakm"
 authors = [
   { name="Dipak", email="dipakm193@gmail.com" },
 ]
+version = "v0.0.1"
 description = "A small example package"
 readme = "README.md"
 requires-python = ">=3.6"
