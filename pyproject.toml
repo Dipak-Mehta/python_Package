@@ -6,7 +6,6 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "example_package_dipakm"
-
 authors = [
   { name="Dipak", email="dipakm193@gmail.com" },
 ]
