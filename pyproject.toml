@@ -19,12 +19,6 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
-[options]
-package_dir =
-    = src
-packages = find:
-python_requires = >=3.6
-
 [project.urls]
 "Homepage" = "https://github.com/pypa/sampleproject"
 "Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
