@@ -6,6 +6,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "example_package_dipakm"
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = {attr = "package.__version__"}
 authors = [
   { name="Dipak", email="dipakm193@gmail.com" },
 ]
